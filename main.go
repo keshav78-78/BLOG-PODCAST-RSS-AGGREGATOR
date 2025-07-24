@@ -42,7 +42,9 @@ func main() {
 		log.Fatal("can't connect to database:", err)
 	}
 
-	apiCfg := apiConfig{}
+	apiCfg := apiConfig{
+		DB: database.New(conn),
+	}
 
 	fmt.Println("PORT IS:", portString)
 
@@ -60,6 +62,7 @@ func main() {
 	v1Router := chi.NewRouter()
 	v1Router.Get("/healthz", handlerReadiness)
 	v1Router.Get("/err", handlerErr)
+	v1Router.Post("/users", apiCfg.handlerCreateUser)
 
 	router.Mount("/v1", v1Router)
 
