@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
@@ -21,10 +22,13 @@ type apiConfig struct {
 
 func main() {
 
-	err := godotenv.Load()
+	feed, err := urlToFeed("https://www.zoho.com/blog/feed")
 	if err != nil {
-		log.Println("Note: .env file not found, will use system environment variables")
+		log.Fatal(err)
 	}
+	fmt.Println(feed)
+
+	godotenv.Load()
 
 	portString := os.Getenv("PORT")
 	if portString == "" {
@@ -42,9 +46,12 @@ func main() {
 		log.Fatal("can't connect to database:", err)
 	}
 
+	db := database.New(conn)
 	apiCfg := apiConfig{
-		DB: database.New(conn),
+		DB: db,
 	}
+
+	go startScraping(db, 10, time.Minute)
 
 	fmt.Println("PORT IS:", portString)
 
@@ -66,7 +73,9 @@ func main() {
 	v1Router.Get("/users", apiCfg.MiddlewareAuth(apiCfg.handlerGetUser))
 	v1Router.Post("/feeds", apiCfg.MiddlewareAuth(apiCfg.handlerCreateFeed))
 	v1Router.Get("/feeds", apiCfg.handlerGetFeeds)
+	v1Router.Get("/posts", apiCfg.MiddlewareAuth(apiCfg.handlerGetPostsForUser))
 	v1Router.Post("/feed_follows", apiCfg.MiddlewareAuth(apiCfg.handlerCreateFeed))
+	v1Router.Delete("/feed_follows/{feedfollowID}", apiCfg.MiddlewareAuth(apiCfg.handlerDeleteFeedFollow))
 
 	router.Mount("/v1", v1Router)
 
