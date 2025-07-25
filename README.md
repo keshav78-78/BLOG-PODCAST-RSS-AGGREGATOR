@@ -30,11 +30,17 @@ A backend service built with Go for an RSS aggregator. It allows users to subscr
 🛠️ Tech Stack
 
 Language: [Go](https://golang.org/)
+
 Database: [PostgreSQL](https://www.postgresql.org/)
+
 Router: [Chi](https://github.com/go-chi/chi)
+
 Database Driver: [pq](https://github.com/lib/pq)
+
 Query Builder: [sqlc](https://sqlc.dev/) for generating type-safe Go code from raw SQL.
+
 Environment: [godotenv](https://github.com/joho/godotenv) for managing configuration.
+
 UUIDs: [google/uuid](https://github.com/google/uuid) for unique identifiers.
 
 🚀 Getting Started
