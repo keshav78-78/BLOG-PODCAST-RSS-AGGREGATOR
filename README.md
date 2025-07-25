@@ -14,11 +14,17 @@ A backend service built with Go for an RSS aggregator. It allows users to subscr
 ✨ Features
 
 👤 User Management: Simple user creation with a unique API key for secure access.
+
 ✍️ Feed Management: Authenticated users can add and manage their list of tracked RSS feeds.
+
 🤝 Feed Following: Users can follow and unfollow feeds to customize their content stream.
+
 📖 Post Fetching: Retrieve the latest posts from all followed feeds through a single API call.
+
 ⚙️ Background Scraper: A concurrent, time-based scraper runs in the background to keep content up-to-date.
+
 🌐 RESTful API: A clean, versioned API for all client-side interactions.
+
 🗃️ Database Migrations: SQL-based schema migrations for robust and easy database setup.
 
 🛠️ Tech Stack
